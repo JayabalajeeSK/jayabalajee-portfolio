@@ -1,34 +1,39 @@
-# Step 1: Use official OpenJDK 24 as the base image
+# Step 1: Use openjdk 24 as the base image
 FROM openjdk:24-jdk-slim AS build
 
-# Step 2: Set the working directory inside the container
+# Install Maven manually
+RUN apt-get update && apt-get install -y wget \
+    && wget https://downloads.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz \
+    && tar -xvzf apache-maven-3.9.5-bin.tar.gz -C /usr/share \
+    && ln -s /usr/share/apache-maven-3.9.5/bin/mvn /usr/bin/mvn
+
+# Set the working directory
 WORKDIR /deployment/jayabalajee-portfolio
 
+# Copy pom.xml and .mvn to download dependencies first
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
 
-
-# Copy only pom.xml first (for better caching)
-COPY pom.xml .
-
-# Download dependencies before copying source files (ensures dependencies are cached)
+# Download dependencies
 RUN mvn dependency:go-offline -B
 
-# Copy the rest of the application
+# Copy the application source code
 COPY src ./src
 
-# Build the project
-RUN mvn clean package
+# Build the application
+RUN mvn clean package -DskipTests
 
+# Step 2: Use a minimal OpenJDK 24 image to run the application
 FROM openjdk:24-jdk-slim
 
-# Step 7: Set the working directory
-WORKDIR /deployment/jayabalajee-portfolio
-# Step 9: Expose port 8080
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the built JAR file from the build stage
+COPY --from=build /deployment/jayabalajee-portfolio/target/jayabalajee-portfolio-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose the application port
 EXPOSE 8080
 
-# Step 8: Copy the built jar from the build stage
-COPY --from=build /deployment/jayabalajee-portfolio/target/*.jar app.jar
-
-
 # Run the application
-ENTRYPOINT ["java", "-jar", "/app.jar"]
-
+CMD ["java", "-jar", "app.jar"]
