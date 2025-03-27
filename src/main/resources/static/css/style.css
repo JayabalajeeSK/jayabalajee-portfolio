@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container img {
+    position: relative;
+    width: 100%;
+    height: 760px;
+}
+
+#lead-content {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#links a {
+    text-decoration: none;
+    padding: 14px 25px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    color: #a0cfee;
+}
+
+#lead-content h1 {
+    color: #a0cfee;
+    font-weight: 900;
+    font-size: 5em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 2%;
+}
+
+#lead-content h2 {
+    color: #a0cfee;
+    font-weight: 500;
+    font-size: 3em;
+    margin-bottom: 2px;
+}
+
+.btn-rounded {
+    background-color: #a0cfee;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 12px;
+}
+
+.btn-rounded:hover {
+    color: #808080;
+    background: #fff;
+    text-decoration: none;
+}
+
+#education,
+#experience,
+#skills,
+#contact {
+    padding: 30px 10px;
+    border-bottom: 1px solid #dcd9d9;
+    text-align: center;
+}
+
+#education h2,
+#experience h2,
+#skills h2,
+#contact h2 {
+    color: #374054;
+}
+
+.education-date {
+    font-size: 14px;
+    color: #808080;
+    margin-bottom: 10px;
+    display: block;
+}
