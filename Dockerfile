@@ -10,7 +10,7 @@ WORKDIR /deployment/jayabalajee-portfolio
 COPY pom.xml .
 
 # Download dependencies before copying source files (ensures dependencies are cached)
-RUN mvn dependency:go-offline
+RUN mvn dependency:go-offline -B
 
 # Copy the rest of the application
 COPY src ./src
